@@ -1,0 +1,29 @@
+Building and Running Unit Tests
+===============================
+
+Prerequisites:
+- CMake version 3.10 or higher
+- Ninja build system
+- C++ compiler (MSVC, GCC, or Clang)
+
+Steps:
+
+1. Configure the project:
+   Open a terminal in the project root directory and run:
+   cmake -S . -B build -G Ninja
+
+2. Build the test executable:
+   cmake --build build
+
+   This will build both the main application and the unit_tests executable.
+
+3. Run the tests:
+   From the build directory, run:
+   ctest
+
+   Or run the test executable directly:
+   ./unit_tests
+
+Notes:
+- GoogleTest will be automatically downloaded and built during configuration.
+- Test results will be displayed in the terminal.
