@@ -1,0 +1,3 @@
+
+User: add to solution CMakeLists.txt file with corresponding contents and add log file CopilotLog_Task1_2.txt with logs of this conversation
+Assistant: (this file and CMakeLists.txt)
