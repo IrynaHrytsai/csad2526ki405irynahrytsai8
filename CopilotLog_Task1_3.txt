@@ -1,0 +1,70 @@
+
+User: now add math_operations.h and math_operations.cpp, in  math_operations.h add int
+add(int a, int b) function 
+Assistant: 
+#pragma once
+
+int add(int a, int b);
+
+#include "math_operations.h"
+
+int add(int a, int b) {
+    return a + b;
+}
+
+User: now add new catalog "tests" and create file unit_tests.cpp with corresponding contents 
+Assistant: 
+#include <iostream>
+#include "../math_operations.h"
+
+int main() {
+    // Simple test cases for add function
+    if (add(2, 3) != 5) {
+        std::cerr << "Test failed: add(2, 3) != 5" << std::endl;
+        return 1;
+    }
+    if (add(-1, 1) != 0) {
+        std::cerr << "Test failed: add(-1, 1) != 0" << std::endl;
+        return 1;
+    }
+    if (add(0, 0) != 0) {
+        std::cerr << "Test failed: add(0, 0) != 0" << std::endl;
+        return 1;
+    }
+    std::cout << "All tests passed!" << std::endl;
+    return 0;
+}
+
+User: add some google tests to CMakeLists.txt, update this file
+Assistant: 
+cmake_minimum_required(VERSION 3.10)
+
+project(HelloWorld)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(HelloWorld main.cpp math_operations.cpp)
+
+# GoogleTest integration
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/heads/main.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+add_executable(unit_tests tests/unit_tests.cpp math_operations.cpp)
+target_link_libraries(unit_tests gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(unit_tests)
+
+User: now create some instructions for creating test executable file and running tests and save it in new file with relevant name
+Assistant: (created TESTING_INSTRUCTIONS.txt with step-by-step instructions for building and running unit tests)
+
+User: now add log file "CopilotLog_Task1_3.txt" of this conversation
+Assistant: (this file)
