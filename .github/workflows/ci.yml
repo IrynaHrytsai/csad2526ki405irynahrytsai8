@@ -31,7 +31,7 @@ jobs:
           ) else if exist ci.bat (
             ci.bat
           ) else (
-            echo No Windows CI script (ci.cmd or ci.bat) found
+            echo "No Windows CI script (ci.cmd or ci.bat) found"
             exit 1
           )
 
