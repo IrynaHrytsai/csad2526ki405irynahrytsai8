@@ -22,11 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup CMake (if required)
-        uses: lukka/get-cmake@v3
-        with:
-          cmake-version: 'latest'
-
       - name: Run CI script on Windows
         if: matrix.os == 'windows-latest'
         shell: cmd
