@@ -21,5 +21,5 @@ enable_testing()
 add_executable(unit_tests tests/unit_tests.cpp math_operations.cpp)
 target_link_libraries(unit_tests gtest_main)
 
-include(GoogleTest)
-gtest_discover_tests(unit_tests)
+# Register the unit_tests executable with CTest so it appears as "BasicAddition"
+add_test(NAME BasicAddition COMMAND unit_tests)
