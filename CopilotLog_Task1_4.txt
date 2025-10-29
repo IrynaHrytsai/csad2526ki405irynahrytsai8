@@ -1,0 +1,77 @@
+
+User: add ci.bat and ci.sh files. Add commands, for next steps : 1. create a build directory if it does not exist. 2. change into the build directory. 3. configure the project using CMake. 4. Build the project using CMake. 5.  run all tests using CTest; should execute in  Linux, macOS and  Windows; should run without parameters
+Assistant:
+(ci.bat and ci.sh created)
+
+ci.bat:
+@echo off
+rem CI script for Windows (Ninja). Runs without parameters.
+
+setlocal enabledelayedexpansion
+
+rem 1) Create build directory if it does not exist
+if not exist "build" (
+  mkdir "build"
+)
+
+rem 2) Change into the build directory
+pushd "build" || (
+  echo Failed to enter build directory.
+  exit /b 1
+)
+
+rem 3) Configure the project using CMake (Ninja generator)
+cmake -G "Ninja" .. || (
+  echo CMake configuration failed.
+  popd
+  exit /b 1
+)
+
+rem 4) Build the project using CMake
+cmake --build . --config Release || (
+  echo Build failed.
+  popd
+  exit /b 1
+)
+
+rem 5) Run all tests using CTest
+ctest --output-on-failure --verbose || (
+  echo Some tests failed.
+  popd
+  exit /b %ERRORLEVEL%
+)
+
+popd
+endlocal
+exit /b 0
+
+ci.sh:
+#!/usr/bin/env bash
+# CI script for Linux/macOS (Ninja). Runs without parameters.
+set -euo pipefail
+
+BUILD_DIR="build"
+
+echo "1) Ensure build directory exists..."
+if [ ! -d "$BUILD_DIR" ]; then
+  mkdir -p "$BUILD_DIR"
+fi
+
+echo "2) Change into build directory..."
+cd "$BUILD_DIR"
+
+echo "3) Configure the project with CMake (Ninja generator)..."
+# Use explicit Ninja generator and request Release build for single-config generators
+cmake -G "Ninja" .. -DCMAKE_BUILD_TYPE=Release
+
+echo "4) Build the project..."
+cmake --build . --config Release
+
+echo "5) Run all tests with CTest..."
+ctest --output-on-failure --verbose
+
+echo "CI completed successfully."
+
+User: now add CopilotLog_Task1_4.txt of all conversation today
+Assistant: (this file)
+

@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*develop*'
+      - '*master*'
+  pull_request:
+    branches:
+      - '*develop*'
+      - '*master*'
+
+jobs:
+  cross_build:
+    name: Cross-platform build and test
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run CI script on Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          if exist ci.cmd (
+            ci.cmd
+          ) else if exist ci.bat (
+            ci.bat
+          ) else (
+            echo "No Windows CI script (ci.cmd or ci.bat) found"
+            exit 1
+          )
+
+      - name: Run CI script on Linux/macOS
+        if: matrix.os != 'windows-latest'
+        run: |
+          if [ -f ./ci.sh ]; then
+            chmod +x ./ci.sh
+            ./ci.sh
+          else
+            echo "ci.sh not found"
+            exit 1
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}
+          path: build/**
